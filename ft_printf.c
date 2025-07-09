@@ -6,65 +6,98 @@
 /*   By: opaulman <opaulman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 14:19:52 by opaulman          #+#    #+#             */
-/*   Updated: 2025/07/07 21:16:46 by opaulman         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:09:38 by opaulman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_libftprintf.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-char	*argumentscount(char *s)
+int	ft_paramcount(char *s)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = 0;
+	while (s[i] != 0)
+	{
+		if (s[i] == '%' && s[i + 1] != '%')
+		{
+			count++;
+		}
+		i++;
+	}
+	return (count);
+}
+char	*ft_typeofparam(char *s, int size)
 {
 	int		i;
+	int		count;
 	char	*output;
 
-	output = ft_strdup(s);
-	i = -1;
-	while (s != 0)
+	i = 0;
+	count = 0;
+	output = ft_calloc(size + 1, sizeof(char));
+	if (output == NULL)
+		return (NULL);
+	while (s[i] != 0)
 	{
-		s = ft_strchr(s, '%');
+		if (s[i] == '%')
+		{
+			output[count] = s[i + 1];
+			count++;
+			i++;
+		}
 		i++;
-		output[i + 1] = s[i];
 	}
-	output[0] = i + '0';
 	return (output);
 }
 
-// char	*sum(int num, ...)
-// {
-// 	va_list	fyuumi;
-// 	char	*total;
-// 	int		i;
-
-// 	total = NULL;
-// 	i = 0;
-// 	va_start(fyuumi, num);
-// 	while (i++ < num)
-// 	{
-// 		total += va_arg(fyuumi, int);
-// 	}
-// 	va_end(fyuumi);
-// 	return (total);
-// }
-
 int	ft_printf(const char *s, ...)
 {
-	int		arguments;
+	va_list	fyuumi;
+	int		numofParameters;
 	char	*copy;
-	int		i;
+	char	*Parameters;
 
-	i = 0;
+	va_start(fyuumi, s);
 	copy = ft_strdup(s);
-	arguments = 0;
-	arguments = argumentscount(copy)[0] - '0';
-	printf("%d\n", arguments);
-	if (arguments == 0)
-	{
-		while (copy[i])
-			ft_putchar_fd(copy[i++], 1);
-	}
+	numofParameters = ft_paramcount(copy);
+	Parameters = (ft_typeofparam(copy, numofParameters));
+	if (Parameters == 0)
+		return (0);
+	ft_writestring(copy, numofParameters, fyuumi, Parameters);
+	va_end(fyuumi);
 	return (0);
 }
+// int	ft_printf(const char *s, ...)
+// {
+// 	va_list	fyuumi;
+// 	int		numofParameters;
+// 	char	*copy;
+// 	char	*Parameters;
+
+// 	va_start(fyuumi, s);
+// 	copy = ft_strdup(s);
+// 	numofParameters = Paramcount(copy);
+// 	printf("num of parameters: %d", numofParameters);
+// 	printf("\n");
+// 	Parameters = (typeofparam(copy, numofParameters));
+// 	if (Parameters == 0)
+// 		return (0);
+// 	printf("type of Parameters: %s", Parameters);
+// 	printf("\n");
+// 	writestring(copy);
+// 	printf("\n");
+// 	printf("the things inside of the paramter:\n");
+// 	ft_format(Parameters, fyuumi, numofParameters);
+// 	va_end(fyuumi);
+// 	printf("\n");
+// 	printf("\n");
+// 	return (0);
+// }
+// code with printf checks
