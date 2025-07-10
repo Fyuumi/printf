@@ -6,60 +6,50 @@
 /*   By: opaulman <opaulman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 15:23:23 by opaulman          #+#    #+#             */
-/*   Updated: 2025/07/09 16:57:31 by opaulman         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:03:37 by opaulman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libftprintf.h"
+#include "libftprintf.h"
 
-int	ft_format(char *Parameter, va_list fyuumi, int Paramcount, int count)
+int	ft_printd(int c)
 {
-	if (Parameter[count] == 'd' || Parameter[count] == 'i')
-	{
-		ft_putnbr_fd(va_arg(fyuumi, int), 1);
-		ft_putchar_fd(' ', 1);
-	}
-	if (Parameter[count] == 'c')
+	ft_putnbr_fd(c, 1);
+	return (ft_strlen(ft_itoa(c)));
+}
+
+int	ft_prints(char *s)
+{
+	ft_putstr_fd(s, 1);
+	return (ft_strlen(s));
+}
+
+int	ft_printu(unsigned int u)
+{
+	ft_putnbr_fd(u, 1);
+	return (1);
+}
+
+int	ft_format(char *parameter, va_list fyuumi, int count)
+{
+	if (parameter[count] == 'd' || parameter[count] == 'i')
+		return (ft_printd(va_arg(fyuumi, int)));
+	if (parameter[count] == 'c')
 	{
 		ft_putchar_fd(va_arg(fyuumi, int), 1);
+		return (1);
 	}
-	if (Parameter[count] == 's')
+	if (parameter[count] == 's')
+		return (ft_prints(va_arg(fyuumi, char *)));
+	if (parameter[count] == '%')
 	{
-		ft_putstr_fd(va_arg(fyuumi, char *), 1);
+		ft_putchar_fd('%', 1);
+		return (1);
 	}
-	// if (Parameter[i] == 'p')
-	// {
-	// void* in hexadezimal i++;
-	// 	ft_printp();
-	// }
-	// 		if (Parameter[i] == 'u')
-	// 		{
-	// 			// unsignend int i++;
-	// 			ft_printu();
-	// 		}
-	// 		if (Parameter[i] == 'x')
-	// 		{
-	// 			// hexadezimal small i++;
-	// 			ft_printx();
-	// 		}
-	// 		if (Parameter[i] == 'X')
-	// 		{
-	// 			// hexadezimal big i++;
-	// 			ft_printX();
-	// 		}
-	// 	}
-	// 	return (0);
-	// }
-	// void	ft_printp(void)
-	// {
-	// }
-	// void	ft_printu(void)
-	// {
-	// }
-	// void	ft_printx(void)
-	// {
-	// }
-	// void	ft_printX(void)
-	// {
+	if (parameter[count] == 'u')
+		return (ft_printu(va_arg(fyuumi, unsigned int)));
+	if (parameter[count] == 'x' || parameter[count] == 'X'
+		|| parameter[count] == 'p')
+		return (ft_hex(fyuumi, parameter, count));
 	return (0);
 }

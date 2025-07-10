@@ -6,13 +6,14 @@
 #    By: opaulman <opaulman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/04 14:17:37 by opaulman          #+#    #+#              #
-#    Updated: 2025/07/07 19:48:31 by opaulman         ###   ########.fr        #
+#    Updated: 2025/07/10 21:04:00 by opaulman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRC = ft_printf.c
+SRC = ft_printf.c ft_format.c ft_paramcount.c ft_typeofparam.c ft_writestring.c \
+	ft_hex.c
 OBJ = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
